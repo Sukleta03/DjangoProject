@@ -1,0 +1,13 @@
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/confirm_email.css' %}">
+
+<section class="center-container">
+    <div class="confirmation-container">
+        <h2>Email Confirmation</h2>
+        <p>Thank you for signing up! An email has been sent to your inbox.
+            Please click the link in the email to confirm your email address.</p>
+        <a class="main-button" href="https://{{ email }}">Check Your Email</a>
+
+    </div>
+</section>
+

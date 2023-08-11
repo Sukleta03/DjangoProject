@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% block content %}
+<body>
+<section class="container center-container">
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <h1 class="title">Create post</h1>
+    {% if messages %}
+            {% for message in messages %}
+                {% if message.tags == 'error' %}
+                <div class="error-messages">
+                    {{ message }}
+                </div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+    <div>
+      <input type="file" name="images" id="images" multiple>
+    </div>
+
+    <div>
+      <label for="description" class="form-label">Description:</label>
+      <textarea class="form-control" name="description" id="description" rows="3"></textarea>
+      <button type="button" class="add-tag-button">Add tag</button>
+    </div>
+    <div class="tag-container">
+        {% load static %}
+    <script src="{% static 'js/tag_script.js' %}"></script>
+    </div>
+    <button type="submit" class="main-button post-button">Post</button>
+  </form>
+</section>
+</body>
+{% endblock %}

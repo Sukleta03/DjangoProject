@@ -1,0 +1,36 @@
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/login.css' %}">
+
+<section class="main_block">
+  <div class="container">
+    <h1 class="title" >Instagram</h1>
+      {% if messages %}
+            {% for message in messages %}
+                {% if message.tags == 'error' %}
+                <div class="error-messages">
+                    {{ message }}
+                </div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+    <form method="post">
+      {% csrf_token %}
+    <hr>
+    <input type="text" placeholder="username" name="username" required>
+    <input type="password" placeholder="password" name="password" required>
+    <hr>
+    <button type="submit" class="my-button">Sing in</button>
+    </form>
+  </div>
+    <div class="container">
+        <p class="facebook_login">
+            <b>Login with Facebook</b>
+        </p>
+    </div>
+
+  <div class="container signin">
+    <p>Don't have account<a href="{% url 'registration' %}">Registration</a></p>
+  </div>
+
+</section>
+

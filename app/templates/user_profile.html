@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+<section class="center-container">
+    <div class="user-profile-container">
+        <h2>{{ user_data.user.username }}</h2>
+    <div class="user-photo">
+        <img src="{{ user_data.avatar.avatar.url }}" alt="User Avatar">
+    </div>
+        <p>{{ user_data.avatar.bio }}</p>
+        Followers: {{ user_data.user_followers }}
+        Following: {{ user_data.user_following }}
+         <div class="follow">
+             <a type="button" class="main-button" href="{% url 'follow' user_data.user.username %}">Follow</a>
+         </div>
+    </div>
+</section>
+{% endblock %}
+

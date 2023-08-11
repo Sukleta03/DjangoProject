@@ -1,0 +1,30 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+<link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/homepage.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/new_post.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/profile.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/user_profile.css' %}">
+</head>
+<body>
+<section>
+    <div class="header">
+        <a href="{% url 'homepage' %}"><button class="main-button">Home</button></a>
+        <a href="{% url 'new_post' %}"><button class="main-button">New post</button></a>
+        <a href="{% url 'profile' %}"><button class="main-button">Profile</button></a>
+        <div class="profile">
+            <img src="{{ user.avatar.avatar.url }}" alt="Avatar">
+             <span>{{ user.username }}</span>
+        </div>
+    </div>
+</section>
+
+
+{% block content %}
+{% endblock %}
+</body>
+</html>
