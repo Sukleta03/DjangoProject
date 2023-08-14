@@ -31,6 +31,7 @@ class UserViews:
                 return render(request, "login.html")
 
     @staticmethod
+    @csrf_exempt
     def registration(request):
         if request.method == 'GET':
             return render(request, "registration.html")
