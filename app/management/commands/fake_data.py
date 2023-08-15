@@ -21,8 +21,8 @@ class Command(BaseCommand):
 
         for i in range(0, num):
             user = User.objects.create_user(
-                username=fake.unique.user_name(),
-                email=fake.unique.email(),
+                username=fake.user_name(),
+                email=fake.email(),
                 password=fake.password(),
                 first_name=fake.first_name(),
                 last_name=fake.last_name(),
