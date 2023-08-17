@@ -32,5 +32,6 @@ urlpatterns = [
     path("", include("app.urls"), name="reaction"),
     path("", include("app.urls"), name="user_profile"),
     path("", include("app.urls"), name="follow"),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]
+              # + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
