@@ -137,8 +137,8 @@ USE_TZ = True
 # ]
 
 
-STATIC_URL = '/home/ubuntu/static/'
-MEDIA_URL = '/home/ubuntu/media/'
+STATIC_URL = '/home/ubuntu/task-12/static/'
+MEDIA_URL = '/home/ubuntu/task-12/media/'
 
 # STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
