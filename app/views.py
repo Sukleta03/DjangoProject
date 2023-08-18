@@ -37,7 +37,6 @@ class Login(View):
 class Registration(View):
     form = RegistrationForm()
 
-
     def get(self, request):
         return render(request, "registration.html", {"form": self.form})
 
@@ -287,15 +286,5 @@ def get_user_data(username):
 def log_out(request):
     logout(request)
     return redirect(reverse('login'))
-
-
-
-
-
-
-
-
-
-
 
 
