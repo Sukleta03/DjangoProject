@@ -81,7 +81,7 @@ class Registration(View):
 
 @method_decorator(csrf_exempt, name='dispatch')
 class Confirmation(View):
-    def get(self, confirm_id):
+    def get(self, request, confirm_id):
         user = ConfirmEmail.objects.get(email_id=confirm_id).user
         if user.is_active is False:
             user.is_active = True
