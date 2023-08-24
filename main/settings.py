@@ -24,10 +24,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-u=)2w7aw^hs==0y+kao(f7+s4mc8)r+2ccj!5ezlj_(eb#1t8_'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['13.51.150.26', '127.0.0.1']
-# ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Email settings
@@ -128,17 +127,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
-]
-
 MEDIA_URL = '/media/'
+
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-# STATIC_ROOT = Path(BASE_DIR, 'static')
-# MEDIA_ROOT = Path(BASE_DIR, 'media')
-#
-# STATIC_URL = '/static/'
-# MEDIA_URL = '/media/'
+STATIC_ROOT = Path(BASE_DIR, 'static')
 
 
 

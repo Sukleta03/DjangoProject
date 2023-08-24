@@ -8,7 +8,6 @@ from django.http import JsonResponse
 import json, string, random
 from django.utils.decorators import method_decorator
 from .models import User, Avatar, Post, Tags, Reaction, Image, Follow, ConfirmEmail
-from django.contrib.auth.hashers import check_password
 from django.contrib.auth.decorators import login_required
 from django.views import View
 from .forms import *
