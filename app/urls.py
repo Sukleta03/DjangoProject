@@ -1,6 +1,10 @@
 from django.urls import path
 
 from . import views
+from django.conf import settings
+from django.conf.urls.static import static
+
+
 
 urlpatterns = [
     path("", views.Homepage.as_view(), name="homepage"),
@@ -13,4 +17,4 @@ urlpatterns = [
     path('reaction/', views.Reactions.as_view(), name='reaction'),
     path('user_profile/<str:username>', views.UserProfile.as_view(), name='user_profile'),
     path('follow/<str:username>', views.FollowView.as_view(), name='follow'),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

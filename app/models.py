@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
+from cloudinary.models import CloudinaryField
 
 
 class Avatar(models.Model):
@@ -9,7 +10,8 @@ class Avatar(models.Model):
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     bio = models.TextField(default='')
-    avatar = models.ImageField(upload_to='images/avatars/', default='images/avatars/default.png')
+    avatar = CloudinaryField('avatar', folder='avatar', default='avatar/default_y8l4fd.png')
+    # avatar = models.ImageField(upload_to='images/avatars/', default='images/avatars/default.png')
 
 
 class ConfirmEmail(models.Model):
@@ -47,7 +49,8 @@ class Image(models.Model):
         db_table = 'image'
 
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
-    image = models.ImageField(upload_to='images/', default='images/default.png')
+    # image = models.ImageField(upload_to='images/', default='images/default.png')
+    image = CloudinaryField('images', default='default_snkrnb.png')
 
 
 class Tags(models.Model):

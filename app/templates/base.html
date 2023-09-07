@@ -1,30 +1,88 @@
-{% load static %}
-
 <!DOCTYPE html>
 <html>
 
 <head>
-<link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}">
-<link rel="stylesheet" type="text/css" href="{% static 'css/homepage.css' %}">
-<link rel="stylesheet" type="text/css" href="{% static 'css/new_post.css' %}">
-<link rel="stylesheet" type="text/css" href="{% static 'css/profile.css' %}">
-<link rel="stylesheet" type="text/css" href="{% static 'css/user_profile.css' %}">
+    {% load static %}
+    {% load bootstrap5 %}
+    {# Load CSS and JavaScript #}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    <link rel="shortcut icon" href="{% static 'images/favicon.png' %}" type="image/x-icon">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/homepage.css' %}">
+
 </head>
+
 <body>
-<section>
-    <div class="header">
-        <a href="{% url 'homepage' %}"><button class="main-button">Home</button></a>
-        <a href="{% url 'new_post' %}"><button class="main-button">New post</button></a>
-        <a href="{% url 'profile' %}"><button class="main-button">Profile</button></a>
-        <div class="profile">
-            <img src="{{ user.avatar.avatar.url }}" alt="Avatar">
-             <span>{{ user.username }}</span>
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark sticky-top">
+        <!-- Container wrapper -->
+        <div class="container-fluid">
+            <!-- Toggle button -->
+            <button
+                class="navbar-toggler"
+                type="button"
+                data-mdb-toggle="collapse"
+                data-mdb-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent"
+                aria-expanded="false"
+                aria-label="Toggle navigation"
+            >
+                <i class="fas fa-bars"></i>
+            </button>
+
+            <!-- Collapsible wrapper -->
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <!-- Navbar brand -->
+                <a class="navbar-brand mt-2 mt-lg-0" href="#">
+                    <img
+                        src="{% static 'images/favicon.png' %}"
+                        alt="logo"
+                        height="30"
+                        style="width: 100%;"
+                        loading="lazy"
+                    />
+                </a>
+                <!-- Left links -->
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'homepage' %}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'new_post' %}">New post</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'profile' %}">Profile</a>
+                    </li>
+                </ul>
+                <!-- Left links -->
+            </div>
+            <!-- Collapsible wrapper -->
+
+            <!-- Right elements -->
+            <div class="d-flex align-items-center">
+              <span class="navbar-text"  style=" margin-right: 10px">
+                  {{ user.username }}
+              </span>
+
+                <!-- Avatar -->
+                <div class="dropdown">
+                    <img
+                        src="{{ user.avatar.avatar.url }}"
+                        class="rounded-circle"
+                        height="50px"
+                        width="50px"
+                        alt="Avatar"
+                        loading="lazy"
+                    />
+                </div>
+            </div>
+            <!-- Right elements -->
         </div>
-    </div>
-</section>
+        <!-- Container wrapper -->
+    </nav>
 
 
 {% block content %}
 {% endblock %}
 </body>
+
 </html>

@@ -1,66 +1,131 @@
 {% extends 'base.html' %}
 
 {% load static %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 {% block content %}
+<style>
+.fa-search::before {
+  content: "\f002";
+}
+</style>
 
-<form method="get">
-  <div class="button-box">
-    <button type="submit" name="sort" value="likes">Top post</button>
-    <button type="submit" name="sort" value="my_posts">My Posts</button>
-    <button type="submit" name="sort" value="following">Following</button>
-  </div>
-</form>
 
-<form method="get">
-  <div class="button-box">
-    <div>
-      <button type="submit" name="sort" value="by_tag">Search by tag</button>
-      <input type="text" name="tag">
-    </div>
-  </div>
-</form>
-  {% for post in posts %}
-  <div class="post">
-    <div class="user-info">
-      <img src="{{ post.avatar.avatar.url }}" alt="profile photo" class="profile-photo">
-      <form method="get" action="{% url 'user_profile' post.username %}">
-        <button type="submit" class="username" >{{ post.avatar.bio }}</button>
+  <!-- Sidebar -->
+  <nav id="sidebarMenu" class="collapse d-lg-block sidebar collapse bg-white">
+    <div class="position-sticky">
+        <form>
+
+      <div class="list-group list-group-flush mx-1 mt-4">
+
+
+       <div class="input-group rounded">
+          <input type="search" class="form-control rounded" placeholder="Search by tag:" aria-label="Search" aria-describedby="search-addon" />
+            <button class="btn btn-primary"><i class="fa-solid fa-magnifying-glass"></i></button>
+        </div>
+
+
+
+        <button type="submit" name="sort" value="likes" class="list-group-item list-group-item-action py-2 ripple" aria-current="true">
+          <i class="fas fa-tachometer-alt fa-fw me-3"></i><span>Top posts</span>
+        </button>
+
+          <button type="submit" name="sort" value="my_posts" class="list-group-item list-group-item-action py-2 ripple" aria-current="true">
+          <i class="fas fa-tachometer-alt fa-fw me-3"></i><span>My posts</span>
+        </button>
+
+          <button type="submit" name="sort" value="following" class="list-group-item list-group-item-action py-2 ripple" aria-current="true">
+          <i class="fas fa-tachometer-alt fa-fw me-3"></i><span>Following</span>
+        </button>
+
+      </div>
         </form>
-      <div class="tags">
-        {% for tag in post.tags %}
-        <p class="tag">{{ tag.tag }}</p>
-        {% endfor %}
+    </div>
+
+  </nav>
+    <!-- Sidebar -->
+
+<!--Main layout-->
+{% for post in posts %}
+<section class="h-100 gradient-custom-2">
+  <div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col col-lg-9 col-xl-7">
+        <div class="card">
+          <div class="rounded-top text-white d-flex flex-row" style="background-color: #000; height:200px;">
+            <div class="ms-4 mt-5 d-flex flex-column" style="width: 150px;">
+              <img src="{{ post.avatar.avatar.url }}"
+                alt="Generic placeholder image" class="img-fluid img-thumbnail mt-4 mb-2"
+                style="width: 150px; z-index: 1">
+            </div>
+
+              <form method="get" action="{% url 'user_profile' post.username %}">
+            <div class="ms-2" style="margin-top: 130px;">
+                <button class="btn btn-light" type="submit">{{ post.avatar.bio }}</button>
+                {% for tag in post.tags %}
+                  <div class="d-inline p-2">{{ tag.tag }}</div>
+                {% endfor %}
+            </div>
+              </form>
+
+          </div>
+          <div class="p-4 text-black" style="background-color: #f8f9fa;">
+          </div>
+          <div class="card-body p-4 text-black">
+
+            <div id="carouselExampleControls-{{ post.post_id }}" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner" style="text-align: center;">
+                {% for image in post.images %}
+                <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                    <img src="{{ image.image.url }}" class="d-block mx-auto" alt="Image {{ forloop.counter }}">
+                </div>
+                {% endfor %}
+            </div>
+            <button class="carousel-control-prev " type="button" data-bs-target="#carouselExampleControls-{{ post.post_id }}" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon text-dark" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls-{{ post.post_id }}" data-bs-slide="next">
+                <span class="carousel-control-next-icon text-dark" aria-hidden="false"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+
+            </div>
+            <div class="card-body p-4 text-black mb-3">
+                <p class="text-break">{{ post.description }}</p>
+
+
+             <div class="like-dislike">
+
+            <div class="like">
+              <button class="like-button" data-post-id="{{ post.post_id }}" data-reaction-type="like">
+                <img src="{% static 'images/like_img.png' %}" alt="like">
+              </button>
+              <span class="count" id="like-count-{{ post.post_id }}">{{ post.likes }}</span>
+            </div>
+            <div class="divider"></div>
+            <div class="dislike">
+              <button class="dislike-button" data-post-id="{{ post.post_id }}" data-reaction-type="dislike">
+                <img src="{% static 'images/dislike_img.png' %}" alt="dislike">
+              </button>
+              <span class="count" id="dislike-count-{{ post.post_id }}">{{ post.dislikes }}</span>
+            </div>
+          </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="images">
-      {% for image in post.images %}
-      <div class="image-container">
-      <img src="{{ image.image.url }}" alt="image">
-    </div>
-      {% endfor %}
-    </div>
-    <p class="description">{{ post.description }}</p>
-    <div class="like-dislike">
-
-    <div class="like">
-      <button class="like-button" data-post-id="{{ post.post_id }}" data-reaction-type="like">
-        <img src="{% static 'images/like_img.png' %}" alt="like">
-      </button>
-      <span class="count" id="like-count-{{ post.post_id }}">{{ post.likes }}</span>
-    </div>
-    <div class="divider"></div>
-    <div class="dislike">
-      <button class="dislike-button" data-post-id="{{ post.post_id }}" data-reaction-type="dislike">
-        <img src="{% static 'images/dislike_img.png' %}" alt="dislike">
-      </button>
-      <span class="count" id="dislike-count-{{ post.post_id }}">{{ post.dislikes }}</span>
-    </div>
-  </div>
-  </div>
+</section>
 {% endfor %}
-  <script src="{% static 'js/reaction.js' %}"></script>
+
+<script>
+    function myFunction(x) {
+  x.classList.toggle("fa-thumbs-down");
+}
+</script>
+<script src="{% static 'js/reaction.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 {% endblock %}
-
-
-
-

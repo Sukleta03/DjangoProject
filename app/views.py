@@ -4,7 +4,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
 from django.core.mail import send_mail
 from django.db.models import Count, Q
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 import json, string, random
 from django.utils.decorators import method_decorator
 from .models import User, Avatar, Post, Tags, Reaction, Image, Follow, ConfirmEmail
@@ -18,7 +18,7 @@ class Login(View):
     form = LoginForm()
 
     def get(self, request):
-        return render(request, "login.html", {"form": self.form})
+        return render(request, "login.html",  {"form": self.form})
 
     def post(self, request):
         username = request.POST.get('username')
@@ -26,6 +26,7 @@ class Login(View):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
+            print(user.username)
             return redirect(reverse('homepage'))
         else:
             messages.error(request, 'Invalid username or password')
@@ -102,13 +103,17 @@ class Profile(View):
             avatar_img = request.FILES.get('avatar')
             user.avatar.avatar = avatar_img
             user.avatar.save()
-        if request.POST.get('first_name') and request.POST.get('last_name'):
+        if request.POST.get('first_name'):
             first_name = request.POST.get('first_name')
-            last_name = request.POST.get('last_name')
-            bio = first_name + " " + last_name
-            user.avatar.bio = bio
             user.first_name = first_name
+            bio = first_name + " " + user.last_name
+            user.avatar.bio = bio
+            user.save(), user.avatar.save()
+        if request.POST.get('last_name'):
+            last_name = request.POST.get('last_name')
             user.last_name = last_name
+            bio = user.first_name + " " + last_name
+            user.avatar.bio = bio
             user.save(), user.avatar.save()
         if request.POST.get('email'):
             if User.objects.filter(email=request.POST.get('email')).exists():
@@ -117,10 +122,20 @@ class Profile(View):
             email = request.POST.get('email')
             user.email = email
             user.save()
-        if request.POST.get('password'):
+        if request.POST.get('password') and request.POST.get('new_password') and request.POST.get('new_password_repeat'):
             password = request.POST.get('password')
-            user.set_password(password)
-            user.save()
+            new_password = request.POST.get('new_password')
+            new_password_repeat = request.POST.get('new_password_repeat')
+            if user.check_password(password) and new_password == new_password_repeat:
+                user.set_password(new_password)
+                user.save()
+                login(request, user)
+            elif user.check_password(password) is not True:
+                messages.error(request, 'Invalid password')
+                return render(request, "profile.html", {'user': user})
+            elif new_password != new_password_repeat:
+                messages.error(request, 'Passwords do not match')
+                return render(request, "profile.html", {'user': user})
         return redirect(reverse('profile'))
 
 
@@ -143,17 +158,6 @@ class FollowView(View):
         else:
             Follow.objects.create(follower=request.user, following=following)
         return redirect(reverse('user_profile', kwargs={'username': username}))
-
-    #     @login_required(login_url='/login/')
-    #     def follow(request, username):
-    #         if request.method == 'GET':
-    #             following = User.objects.filter(username=username).first()
-    #             is_followed = Follow.objects.filter(follower=request.user, following=following).exists()
-    #             if is_followed:
-    #                 Follow.objects.filter(follower=request.user, following=following).delete()
-    #             else:
-    #                 Follow.objects.create(follower=request.user, following=following)
-    #             return redirect(reverse('user_profile', kwargs={'username': username}))
 
 
 @method_decorator(login_required(login_url='/login/'), name='dispatch')
@@ -270,12 +274,14 @@ def get_posts(posts):
 def get_user_data(username):
     user = User.objects.get(username=username)
     user_posts = get_posts(Post.objects.filter(user=user))
+    posts_count = Post.objects.filter(user=user).count()
     user_avatar = user.avatar
     user_followers = Follow.objects.filter(following=user).count()
     user_following = Follow.objects.filter(follower=user).count()
     return {
         'user': user,
         'user_posts': user_posts,
+        'posts_count': posts_count,
         'avatar': user_avatar,
         'user_followers': user_followers,
         'user_following': user_following,
