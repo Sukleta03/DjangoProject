@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% block content %}
+
+<section class="vh-100 gradient-custom">
+  <div class="container py-5 h-100">
+    <div class="row justify-content-center align-items-center h-100">
+      <div class="col-12 col-lg-9 col-xl-7">
+        <div class="card shadow-2-strong card-registration" style="border-radius: 15px;">
+          <div class="card-body p-4 p-md-5">
+            <h3 class="mb-4 pb-2 pb-md-0 mb-md-5">New Post</h3>
+              {% if messages %}
+              {% for message in messages %}
+                  {% if message.tags == 'error' %}
+                  <div class="alert alert-danger" role="alert">
+                      {{ message }}
+                  </div>
+                  {% endif %}
+              {% endfor %}
+              {% endif %}
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+
+              <div class="row">
+                 <div class="mb-3">
+                  <input class="form-control" name="images" id="images" type="file" multiple>
+                </div>
+                <div class="col-md-6 mb-4">
+              </div>
+
+              <div class="row">
+                <div class="form-group">
+                <label for="description">Description:</label>
+                <textarea class="form-control" name="description" id="description" rows="3"></textarea>
+              </div>
+              </div>
+
+              <div class="row">
+                  <div class="col-md-6 mb-4 pb-2">
+                <div class="col-md-6 mb-4 pb-2">
+              </div>
+
+              <div class="row">
+                <div class="col-12">
+                    <button type="button" class="btn btn-success btn-sm add-tag-button" >
+                        Add Tag
+                    </button>
+                </div>
+              </div>
+
+              <div class="mt-4 pt-2">
+                <div class="tag-container">
+                  <script src="{% static 'js/tag_script.js' %}"></script>
+                </div>
+              </div>
+                      <div class="mt-4 pt-2">
+                <button type="submit" class="btn btn-primary btn-lg">
+                    Post
+                </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
+

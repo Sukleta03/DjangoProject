@@ -1,0 +1,25 @@
+<VirtualHost *:80>
+
+        ErrorLog /var/log/apache2/task-12-error.log
+        CustomLog /var/log/apache2/task-12-access.log combine
+
+        alias /staic /home/ubuntu/task-12/static
+        <Directory /home/ubuntu/task-12/static>
+                Require all granted
+        </Directory>
+
+        alias /media /home/ubuntu/task-12/media
+        <Directory /home/ubuntu/task-12/media>
+                Require all granted
+        </Directory>
+
+
+        <Directory /home/ubuntu/task-12/main>
+                Require all granted
+        </Directory>
+
+        WSGIDaemonProcess main python-home=/home/ubuntu/task-12/venv python-path=/home/ubuntu/task-12/
+        WSGIProcessGroup main
+        WSGIScriptAlias / /home/ubuntu/task-12/main/wsgi.py
+
+</VirtualHost>

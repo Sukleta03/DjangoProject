@@ -1,0 +1,61 @@
+/// dbdiagram ///
+https://dbdiagram.io/d/643a88306b31947051a4395f
+
+
+Table User {
+  id Integer [primary key]
+  password PaswordField
+  username TextField
+  first_name CharField
+  last_name CharField
+  is_active bool
+}
+
+Table Avatar {
+  user ForeignKey [primary key , unique]
+  bio TextField
+  avatar ImageField
+}
+
+Table ConfirmEmail {
+  user ForeignKey
+  email_id CharField
+}
+
+Table Follow {
+  follower ForeignKey
+  following ForeignKey
+}
+
+Table Posts {
+  user ForeignKey
+  post_id AutoField [primary key]
+  created_at DateTimeField
+  description TextField
+}
+
+Table Images {
+  post ForeignKey
+  image ImageField
+}
+
+Table Tags {
+  post ForeignKey
+  tag CharField
+}
+
+Table Reaction {
+  post ForeignKey
+  user ForeignKey
+  reaction CharField
+}
+
+Ref: ConfirmEmail.user > User.id
+Ref: Avatar.user > User.id
+Ref: Posts.user > User.id
+Ref: Images.post > Posts.post_id
+Ref: Tags.post > Posts.post_id
+Ref: Reaction.post > Posts.post_id
+Ref: Reaction.user > User.id
+Ref: Follow.follower > User.id
+Ref: Follow.following > User.id
